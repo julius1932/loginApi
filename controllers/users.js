@@ -54,14 +54,15 @@ module.exports={
         }else{ 
             if(result.length>=1){
             	hashedPass=result[0].password;
-            	bcrypt.compare(req.value.body.password, hashedPass, function(err, res) {
-                     if(res) {
+            	bcrypt.compare(req.value.body.password, hashedPass, function(err, ress) {
+                     if(ress) {
                         // Passwords match
-                        var sessData = req.session;
-                        sessData.user = query;
+                        req.session.user =req.value.body.email;
                         console.log(req.cookies);
-	                   console.log(" uuuuuuuuuuuuuuuuuuuuuuuuuu");
-                       console.log(req.session);
+	                    console.log(" uuuuuuuuuuuuuuuuuuuuuuuuuu");
+                        console.log(req.session);
+                        
+                        return res.status(200).send();
                      } else {
                         // Passwords don't match
                         console.log("wrong username or password");

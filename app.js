@@ -3,7 +3,7 @@ const morgan =require('morgan');
 const bodyParser =require('body-parser');
 const cookieParser= require('cookie-parser');
 const session= require('express-session');
-const cookieSession = require("cookie-session");
+//const cookieSession = require("cookie-session");
 
 const app =express();
 
@@ -15,13 +15,12 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(cookieParser());
 // initialize express-session to allow us track the logged-in user across sessions.
 
-app.use(session());
+//app.use(session());
 app.use(session({
     key: 'user_sid',
     secret: 'somerandonstuffs',
     resave: true,
     saveUninitialized: true,
-    user:{}
 })); 
 
 // Routes
