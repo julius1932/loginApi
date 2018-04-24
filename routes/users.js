@@ -4,8 +4,6 @@ const { validateBody, schemas }=require('../helpers/routesHelpers');
 const UsersControllers=require('../controllers/users');
 
 const sessionChecker = (req, res, next) => {
-	console.log( "in sessionChecker");
-	console.log(req.session);
     if (!req.session.user) {
        console.log("not logged");
     } else {
@@ -15,23 +13,29 @@ const sessionChecker = (req, res, next) => {
 router.route('/signup')
  .post(validateBody(schemas.signUpSchema),UsersControllers.signUp);
 
- router.get('/signup',function(req,res){//testing cookies sessionChecker,
-    //console.log(req.session['user_sid']);
-	console.log("============================================");
-	console.log(req.session.user);
-	console.log("============================================");
+ router.get('/signUp',function(req,res){
 	res.sendFile( 'C:/Users/cherutombo/loginApi/signup.html');
  });
 
- router.get('/products',sessionChecker,function(req,res){//testing cookies ,
-    //console.log(req.session['user_sid']);
-	console.log("============================================");
-	console.log(req.session.user);
-	console.log("============================================");
-	res.sendFile( 'C:/Users/cherutombo/loginApi/products.html');
+//protected root
+ router.get('/products',sessionChecker,function(req,res){//testing cookies sessionChecker,
+	//res.sendFile( 'C:/Users/cherutombo/loginApi/products.html');
+	res.status(200).send("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
  });
- router.route('/signin')
+
+ router.route('/signIn')
  .post(validateBody(schemas.authSchema),UsersControllers.signIn);
+
+  router.get('/signIn',function(req,res){
+	res.sendFile( 'C:/Users/cherutombo/loginApi/signIn.html');
+ });
+
+router.get('/logout',function(req,res){
+	req.session.user=null;
+	res.status(200).send();
+    res.redirect('/users/products');
+ });
 
  router.route('/secret')
  .post(UsersControllers.secret);

@@ -10,6 +10,7 @@ const app =express();
 // Middlewares
 // set morgan to log info about our requests for development use.
 app.use(morgan('dev'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 // initialize cookie-parser to allow us access the cookies stored in the browser. 
 app.use(cookieParser());

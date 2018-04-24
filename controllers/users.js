@@ -26,30 +26,33 @@ module.exports={
 		var query = { email : req.value.body.email };
 		await dbo.collection("users").find(query).toArray(function(err, result) {
         if (err) {
+            res.redirect('/users/signUp');
         	return;
         }else{ 
             if(result.length>=1){
         	    console.log("email already registered");
+        	    res.redirect('/users/signUp');
                 return;
             }
             return dbo.collection("users").insertOne(item, function(err, res) {
                 if (err) {
+                	 res.redirect('/users/signUp');
                 	return;
                 };
                 req.session.user = query;
                 console.log("1 document inserted");
+                res.status(200).send();
+                res.redirect('/users/products');
                 return;
            });
         }
       });
 	},
 	signIn: async(req, res, next)=>{
-		//email,password
-		console.log("UsersComtroller.signIn called");
-		//console.log(req.['user']);
 		var query = { email : req.value.body.email };
 	    await dbo.collection("users").find(query).toArray(function(err, result) {
         if (err) {
+        	res.redirect('/users/signIn');
         	return;
         }else{ 
             if(result.length>=1){
@@ -58,21 +61,19 @@ module.exports={
                      if(ress) {
                         // Passwords match
                         req.session.user =req.value.body.email;
-                        console.log(req.cookies);
-	                    console.log(" uuuuuuuuuuuuuuuuuuuuuuuuuu");
-                        console.log(req.session);
-                        
-                        return res.status(200).send();
+                        res.status(200).send();
+                        res.redirect('/users/products');
                      } else {
                         // Passwords don't match
                         console.log("wrong username or password");
+                        res.redirect('/users/signIn');
                     } 
                 });
                 return;
             }else{
                 console.log("wrong username or password 2");
+                res.redirect('/users/signIn');
             }
-            return
         }
   });
 
