@@ -2,13 +2,17 @@ const MongoClient = require('mongodb').MongoClient;
 const bcrypt = require('bcrypt');
 const url = "mongodb://localhost:27017/";
 var dbo="";
+// connecting to mongo
 MongoClient.connect(url, function(err, db) {
   if (err) {isfound=false; return;};
   dbo = db.db("mydb");
   });
+
+//hashing the password
 hashPass=function(pass){
     return bcrypt.hash(pass,8);
 }
+//verify supplied password against the one in the db
 isPasswordCorrect=function(plainPass,hashedPass){
  if(bcrypt.compare(plainPass, hashedPass)){
  	return true;
@@ -19,7 +23,7 @@ module.exports={
 	signUp: async (req, res, next)=>{
 		//email, password,phone
 		console.log('contents of req.value.body',req.value.body);
-		console.log("UsersComtroller.signUp called");
+		//console.log("UsersComtroller.signUp called");
 		var pass= await hashPass(req.value.body.password);
 		var item = req.value.body;
 		item.password=pass;
